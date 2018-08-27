@@ -1,5 +1,6 @@
-# opencagedata-react-autocomplete
+# opencage-autocomplete-react
 
+[![Storybook](https://github.com/storybooks/press/blob/master/badges/storybook.svg)](link to site)
 
 ## building
 
