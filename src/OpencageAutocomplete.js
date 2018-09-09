@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import './opencage.css';
 
-class OpencageAutosuggest extends Component {
+class OpencageAutocomplete extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,6 +14,11 @@ class OpencageAutosuggest extends Component {
       suggestions: [],
       isLoading: false,
     };
+    const {
+      getSuggestionValue,
+      onSuggestionSelected,
+      renderSuggestion,
+    } = this.props;
     this.onChange = this.onChange.bind(this);
     this.fetchSuggestions = this.fetchSuggestions.bind(this);
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(
@@ -22,8 +27,21 @@ class OpencageAutosuggest extends Component {
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(
       this
     );
-    this.getSuggestionValue = this.getSuggestionValue.bind(this);
-    this.renderSuggestion = this.renderSuggestion.bind(this);
+    if (getSuggestionValue) {
+      this.getSuggestionValue = getSuggestionValue;
+    } else {
+      this.getSuggestionValue = this.getSuggestionValue.bind(this);
+    }
+    if (onSuggestionSelected) {
+      this.onSuggestionSelected = onSuggestionSelected;
+    } else {
+      this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
+    }
+    if (renderSuggestion) {
+      this.renderSuggestion = renderSuggestion;
+    } else {
+      this.renderSuggestion = this.renderSuggestion.bind(this);
+    }
   }
 
   onChange(event, { newValue }) {
@@ -33,7 +51,11 @@ class OpencageAutosuggest extends Component {
   }
 
   fetchSuggestions(value) {
-    Opencage.geocode({ q: value, key: this.props.apiKey })
+    Opencage.geocode({
+      q: value,
+      key: this.props.apiKey,
+      proxyURL: this.props.proxyURL,
+    })
       .then(data => {
         // console.log(JSON.stringify(data));
         if (data.status.code === 200) {
@@ -43,13 +65,13 @@ class OpencageAutosuggest extends Component {
         } else {
           this.setState({ suggestions: [] });
           // eslint-disable-next-line
-          console.log('error', data.status.message);
+          console.log('[OCA] error', data.status.message);
         }
       })
       .catch(error => {
         this.setState({ suggestions: [] });
         // eslint-disable-next-line
-        console.log('error', error.message);
+        console.log('[OCA] error', error.message);
       });
   }
 
@@ -68,13 +90,20 @@ class OpencageAutosuggest extends Component {
     return suggestion.formatted;
   }
 
+  onSuggestionSelected(event, { suggestion }) {
+    if (this.props.debug) {
+      // eslint-disable-next-line
+      console.log('Suggestion Selected is', suggestion);
+    }
+  }
+
   // eslint-disable-next-line
   renderSuggestion(suggestion) {
     return (
       <div>
-        <span>{suggestion.annotations.flag}</span>&nbsp;<span>
-          {suggestion.formatted}
-        </span>
+        <span>{suggestion.annotations.flag}</span>
+        &nbsp;
+        <span>{suggestion.formatted}</span>
       </div>
     );
   }
@@ -82,31 +111,33 @@ class OpencageAutosuggest extends Component {
   render() {
     const { value, suggestions } = this.state;
     const inputProps = {
-      placeholder: 'address',
+      placeholder: this.props.placeholder || 'address',
       value,
       onChange: this.onChange,
     };
-    // const status = isLoading ? 'Loading...' : 'Type to load suggestions';
-
     return (
       <div className="opencage-wrapper">
-        {/* <div className="status">
-          <strong>Status:</strong> {status}
-        </div> */}
         <Autosuggest
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           getSuggestionValue={this.getSuggestionValue}
           renderSuggestion={this.renderSuggestion}
+          onSuggestionSelected={this.onSuggestionSelected}
           inputProps={inputProps}
         />
       </div>
     );
   }
 }
-OpencageAutosuggest.propTypes = {
+OpencageAutocomplete.propTypes = {
   apiKey: PropTypes.string,
+  proxyURL: PropTypes.string,
+  placeholder: PropTypes.string,
+  debug: PropTypes.bool,
+  getSuggestionValue: PropTypes.func,
+  renderSuggestion: PropTypes.func,
+  onSuggestionSelected: PropTypes.func,
 };
 
-export default OpencageAutosuggest;
+export default OpencageAutocomplete;
