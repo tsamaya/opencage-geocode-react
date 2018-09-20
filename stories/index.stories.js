@@ -20,7 +20,7 @@ storiesOf('Opencage Data', module)
         apiKey={apiKey}
         proxyURL={proxyURL}
         debug={true}
-        onSuggestionSelected={action('suggestion-selected')}
+        onSuggestionSelected={action('SuggestionSelected')}
       />
     );
   });
