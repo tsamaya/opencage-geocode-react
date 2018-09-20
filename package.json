@@ -1,5 +1,5 @@
 {
-  "name": "opencagedata-react-autocomplete",
+  "name": "opencage-autocomplete-react",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
@@ -14,15 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tsamaya/opencagedata-react-autocomplete.git"
+    "url": "git+https://github.com/tsamaya/opencage-autocomplete-react.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tsamaya/opencagedata-react-autocomplete/issues"
+    "url": "https://github.com/tsamaya/opencage-autocomplete-react/issues"
   },
-  "homepage": "https://github.com/tsamaya/opencagedata-react-autocomplete#readme",
+  "homepage": "https://github.com/tsamaya/opencage-autocomplete-react#readme",
   "dependencies": {
     "opencage-api-client": "^0.3.0",
     "prop-types": "^15.6.2",
