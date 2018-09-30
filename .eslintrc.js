@@ -7,4 +7,9 @@ module.exports = {
   env: {
     browser: true,
   },
+  settings: {
+    react: {
+      version: '16.5', // React version, default to the latest React stable release
+    },
+  },
 };
