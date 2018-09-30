@@ -12,33 +12,45 @@ or
 
 yarn add opencage-autocomplete-react
 
+then in your react app:
+
 ```js
-import import OpencageAutocomplete
+import OpencageAutocomplete from 'opencage-autocomplete-react'
+[...]
+const apiKey = 'your-api-key';
+[...]
+render() {
+  return (
+    <OpencageAutocomplete
+      apiKey={apiKey}
+      onSuggestionSelected={(event, { suggestion } => {
+        console.log()
+      })}
+    />
+  );
+}
+```
 
+## development
 
-## storybook
+### clone
+
+    clone the repo
 
 ### setup
 
     $ yarn
 
-### start
+### storybook
 
     $ yarn storybook
 
 open the knobs tab and enter your OpenCage API key or your proxy URL
 
-## building
-
-### setup
-
-    $ yarn
-
 ### develop
 
     $ yarn start
 
-### build
+### building
 
     $ yarn build:prod
-```
